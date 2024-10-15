@@ -1,14 +1,19 @@
 #!/bin/bash
 
-# Step 1: Use cat to output the file (or head for debugging)
-cat Property_Tax_Roll.csv |
+total_value=$(grep "MADISON SCHOOLS" Property_Tax_Roll.csv | cut -d ',' -f 7)
 
-# Step 2: Use grep to filter lines containing "MADISON SCHOOLS"
-grep "MADISON SCHOOLS" |
+sum=0
+count=0
 
-# Step 3: Use cut to extract the 7th column (TotalAssessedValue)
-cut -d ',' -f 7 |
+for value in $total_value; do
+    sum=$(echo "$sum + $value" | bc)
+    count=$((count + 1))
+done
 
-# Step 4: Use awk to calculate the sum and average
-awk '{sum += $1; count += 1} END {print "Average TotalAssessedValue:", sum / count}'
+if [ $count -ne 0 ]; then
+    average=$(echo "scale=2; $sum / $count" | bc)
+    echo "Average TotalAssessedValue: $average"
+else
+    echo "No data found"
+fi
 
