@@ -2,11 +2,13 @@
 
 mkdir -p five
 
-for dir_num in {1..5}; do
-    mkdir -p five/dir$dir_num
+for i in {1..5}; do
+    mkdir -p five/dir$i
 
-    for file_num in {1..4}; do
-        seq -s '\n' $file_num > five/dir$dir_num/file$file_num
+    for j in {1..4}; do
+        for k in $(seq 1 $j); do
+            echo "$j" >> "five/dir$i/file$j"
+        done
     done
 done
 
